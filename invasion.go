@@ -4,8 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/zarazan/invasion/utils"
 )
@@ -34,20 +36,29 @@ type Alien struct {
 
 func (c *City) adjacentCities() (ret []*City) {
 	for _, city := range c.roads {
-		ret = append(ret, city)
+		if !city.destroyed {
+			ret = append(ret, city)
+		}
 	}
 	return
 }
 
 func main() {
+	rand.Seed(time.Now().UnixNano())
 	fmt.Println("We come in peace.")
 	numAliens, err := getNumAliens()
 	if err != nil {
 		log.Fatal(err)
 	}
-	createAliens(numAliens)
 	ReadWorldFile("worlds/world_1.txt")
-	moveAliens()
+	createAliens(numAliens)
+	resolveFights()
+
+	for i := 0; i < 10000; i++ {
+		moveAliens()
+		resolveFights()
+	}
+
 	PrintCities()
 }
 
@@ -68,7 +79,7 @@ func getNumAliens() (int, error) {
 
 func createAliens(numAliens int) {
 	for i := 1; i <= numAliens; i++ {
-		newAlien := &Alien{name: fmt.Sprintf("Alien %d", 1)}
+		newAlien := &Alien{name: fmt.Sprintf("Alien %d", i)}
 		aliens = append(aliens, newAlien)
 		if location, err := utils.GetRandomItem(cities); err == nil {
 			newAlien.location = location
@@ -78,13 +89,37 @@ func createAliens(numAliens int) {
 
 func moveAliens() {
 	for _, alien := range aliens {
+		if alien.destroyed {
+			continue
+		}
 		adjacentCities := alien.location.adjacentCities()
 		newCity, err := utils.GetRandomItem(adjacentCities)
 		if err != nil {
-			fmt.Printf("%s cannot move because there are no adjacent cities")
+			fmt.Printf("%s cannot move because there are no adjacent cities\n", alien.name)
 			continue
 		}
 		fmt.Printf("%s moving from %s to %s\n", alien.name, alien.location.name, newCity.name)
 		alien.location = newCity
+	}
+}
+
+func resolveFights() {
+	occupationMap := make(map[*City][]*Alien)
+	for _, alien := range aliens {
+		if alien.destroyed || alien.location == nil {
+			continue
+		}
+		occupationMap[alien.location] = append(occupationMap[alien.location], alien)
+	}
+
+	for city, occupyingAliens := range occupationMap {
+		if len(occupyingAliens) > 1 {
+			city.destroyed = true
+			fmt.Printf("%s has been destroyed\n", city.name)
+			for _, alien := range occupyingAliens {
+				alien.destroyed = true
+				fmt.Printf("%s has been killed\n", alien.name)
+			}
+		}
 	}
 }
