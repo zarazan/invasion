@@ -21,3 +21,8 @@ Runs for a max pf 10,000 moves or until all aliens have been destroyed.
 Prints to the console each time aliens fight each other.
 
 Prints what is left of the world at the end.
+
+## TODO
+
+Error handling for the parsing of the worlds file
+

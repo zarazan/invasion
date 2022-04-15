@@ -22,6 +22,7 @@ func TestGetNumAliens(t *testing.T) {
 	for _, tt := range testCases {
 		testName := fmt.Sprintf("input:%s, expectedOutput:%d, error:%t", tt.input, tt.want, tt.hasError)
 		t.Run(testName, func(t *testing.T) {
+
 			os.Args = []string{"", tt.input}
 			ans, err := getNumAliens()
 			if !tt.hasError && err != nil {
@@ -32,6 +33,37 @@ func TestGetNumAliens(t *testing.T) {
 			}
 			if ans != tt.want {
 				t.Errorf("Expected %d but got %d", tt.want, ans)
+			}
+		})
+	}
+}
+
+func TestFindCityByName(t *testing.T) {
+	cities = []*City{
+		{name: "Steamboat"},
+		{name: "Winter Park"},
+		{name: "Santa Fe"},
+	}
+	var testCases = []struct {
+		input   string
+		isFound bool
+	}{
+		{"Steamboat", true},
+		{"Santa Fe", true},
+		{"Bad City", false},
+		{"", false},
+	}
+
+	for _, tt := range testCases {
+		testName := fmt.Sprintf("input:%s, isFound:%t", tt.input, tt.isFound)
+		t.Run(testName, func(t *testing.T) {
+
+			ans := findCityByName(tt.input)
+			if tt.isFound && ans == nil {
+				t.Errorf("Expected to find city with name %s", tt.input)
+			}
+			if !tt.isFound && ans != nil {
+				t.Errorf("Expected not to find city with name %s", tt.input)
 			}
 		})
 	}
