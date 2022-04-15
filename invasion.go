@@ -6,9 +6,12 @@ import (
 	"log"
 	"os"
 	"strconv"
+
+	"github.com/zarazan/invasion/utils"
 )
 
 var cities []*City
+var aliens []*Alien
 
 var oppositeDirection = map[string]string{
 	"north": "south",
@@ -29,6 +32,13 @@ type Alien struct {
 	location  *City
 }
 
+func (c *City) adjacentCities() (ret []*City) {
+	for _, city := range c.roads {
+		ret = append(ret, city)
+	}
+	return
+}
+
 func main() {
 	fmt.Println("We come in peace.")
 	numAliens, err := getNumAliens()
@@ -37,6 +47,7 @@ func main() {
 	}
 	createAliens(numAliens)
 	ReadWorldFile("worlds/world_1.txt")
+	moveAliens()
 	PrintCities()
 }
 
@@ -56,5 +67,24 @@ func getNumAliens() (int, error) {
 }
 
 func createAliens(numAliens int) {
-	fmt.Printf("Create %d aliens\n", numAliens)
+	for i := 1; i <= numAliens; i++ {
+		newAlien := &Alien{name: fmt.Sprintf("Alien %d", 1)}
+		aliens = append(aliens, newAlien)
+		if location, err := utils.GetRandomItem(cities); err == nil {
+			newAlien.location = location
+		}
+	}
+}
+
+func moveAliens() {
+	for _, alien := range aliens {
+		adjacentCities := alien.location.adjacentCities()
+		newCity, err := utils.GetRandomItem(adjacentCities)
+		if err != nil {
+			fmt.Printf("%s cannot move because there are no adjacent cities")
+			continue
+		}
+		fmt.Printf("%s moving from %s to %s\n", alien.name, alien.location.name, newCity.name)
+		alien.location = newCity
+	}
 }
