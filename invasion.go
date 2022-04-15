@@ -8,21 +8,39 @@ import (
 	"strconv"
 )
 
-func main() {
-	fmt.Println("We come in peace.")
-	createAliens(getNumAliens())
+type City struct {
+	name      string
+	destroyed bool
+	roads     map[string]*City
 }
 
-func getNumAliens() int {
-	if len(os.Args) < 2 {
-		log.Fatal(errors.New("missing required first parameter for number of aliens"))
-	}
-	fmt.Println(os.Args)
-	numAliens, err := strconv.Atoi(os.Args[1])
+type Alien struct {
+	name      string
+	destroyed bool
+	location  *City
+}
+
+func main() {
+	fmt.Println("We come in peace.")
+	numAliens, err := getNumAliens()
 	if err != nil {
 		log.Fatal(err)
 	}
-	return numAliens
+	createAliens(numAliens)
+}
+
+func getNumAliens() (int, error) {
+	if len(os.Args) < 2 {
+		return 0, errors.New("missing required first parameter for number of aliens")
+	}
+	numAliens, err := strconv.Atoi(os.Args[1])
+	if err != nil {
+		return 0, err
+	}
+	if numAliens < 1 {
+		return 0, errors.New("there must be at least one alien")
+	}
+	return numAliens, nil
 }
 
 func createAliens(numAliens int) {
