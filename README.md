@@ -22,6 +22,10 @@ Prints to the console each time aliens fight each other.
 
 Prints what is left of the world at the end.
 
+## Tests
+
+Run the tests: `go test . -v`
+
 ## TODO
 
 Error handling for the parsing of the worlds file
