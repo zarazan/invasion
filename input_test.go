@@ -15,6 +15,7 @@ func TestFindOrCreateCity(t *testing.T) {
 		if len(cities) != 1 {
 			t.Errorf("a new city was not added")
 		}
+		teardown()
 	})
 
 	t.Run("when the city does exist", func(t *testing.T) {
@@ -29,6 +30,7 @@ func TestFindOrCreateCity(t *testing.T) {
 		if len(cities) != 2 {
 			t.Errorf("expected the number of cities to remain unchanged")
 		}
+		teardown()
 	})
 }
 
@@ -60,5 +62,6 @@ func TestFindCityByName(t *testing.T) {
 				t.Errorf("Expected not to find city with name %s", tt.input)
 			}
 		})
+		teardown()
 	}
 }

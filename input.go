@@ -58,7 +58,11 @@ func findOrCreateCity(name string) *City {
 	if city != nil {
 		return city
 	}
-	city = &City{name: name, roads: make(map[string]*City)}
+	return createCity(name)
+}
+
+func createCity(name string) *City {
+	city := &City{name: name, roads: make(map[string]*City)}
 	cities = append(cities, city)
 	return city
 }

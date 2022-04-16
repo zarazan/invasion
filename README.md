@@ -40,8 +40,12 @@ Aliens will always move in a direction available to them instead of trying to mo
 
 City names do not contain spaces or equal signs (=)
 
-It is possible the city file contains no cities and the aliens do not land on any cities to start. In this situation the simulation runs 10,000 times skipping over all aiens and then completes with an empty output listing all the un-destroyed cities.
+Directions included are only "north", "south", "east" and "west". If you provide directions other than these the simulation will work but the road will only be available one direction.
 
-## TODO
+It is possible the city file contains no cities and the aliens do not land on any cities to start. In this situation the simulation runs 10,000 times skipping over all aiens and then completes with an empty output listing all the un-destroyed cities. The program could be halted when no cities are present if that was the desired functionality.
 
-Error handling for the parsing of the worlds file
+## Possible Improvements
+
+Error handling for the parsing of the worlds file.
+
+An end-to-end test suite could be added that provides an input file and hooks into the console buffer to examine the output.
