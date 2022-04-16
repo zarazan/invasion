@@ -61,6 +61,7 @@ func aliveAliens() (ret []*Alien) {
 	return
 }
 
+// moveAliens moves all alive aliens to an available adjacent city
 func moveAliens() {
 	for _, alien := range aliveAliens() {
 		adjacentCities := alien.location.adjacentCities()
@@ -74,6 +75,8 @@ func moveAliens() {
 	}
 }
 
+// resolveFights destroys all cities and aliens where more than 1 alien
+// currenly occupies a city
 func resolveFights() {
 	occupationMap := make(map[*City][]*Alien)
 	for _, alien := range aliveAliens() {

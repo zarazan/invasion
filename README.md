@@ -46,6 +46,6 @@ It is possible the city file contains no cities and the aliens do not land on an
 
 ## Possible Improvements
 
-Error handling for the parsing of the worlds file.
+Additional error handling for the parsing of the worlds file.
 
 An end-to-end test suite could be added that provides an input file and hooks into the console buffer to examine the output.

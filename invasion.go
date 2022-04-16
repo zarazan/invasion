@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"math/rand"
+	"os"
 	"strconv"
 	"time"
 )
@@ -35,11 +36,11 @@ func setFlags() {
 
 // Reads and parses the first command line argument
 func getNumAliensArg() (int, error) {
-	args := flag.Args()
-	if len(args) < 1 {
-		return 0, errors.New("missing required first parameter for number of aliens")
+	if len(os.Args) < 1 {
+		return 0, errors.New("missing required integer parameter for number of aliens")
 	}
-	numAliens, err := strconv.Atoi(args[0])
+	numAliensArg := os.Args[len(os.Args)-1]
+	numAliens, err := strconv.Atoi(numAliensArg)
 	if err != nil {
 		return 0, err
 	}

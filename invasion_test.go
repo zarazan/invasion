@@ -22,7 +22,6 @@ func TestGetNumAliensArg(t *testing.T) {
 	for _, tt := range testCases {
 		testName := fmt.Sprintf("input:%s, expectedOutput:%d, error:%t", tt.input, tt.want, tt.hasError)
 		t.Run(testName, func(t *testing.T) {
-
 			os.Args = []string{"", tt.input}
 			ans, err := getNumAliensArg()
 			if !tt.hasError && err != nil {

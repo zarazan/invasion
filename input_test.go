@@ -62,6 +62,6 @@ func TestFindCityByName(t *testing.T) {
 				t.Errorf("Expected not to find city with name %s", tt.input)
 			}
 		})
-		teardown()
 	}
+	teardown()
 }
