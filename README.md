@@ -6,7 +6,7 @@ Aliens have flown to earth as a last-ditch attempt to find a habitable planet be
 
 ## Installation
 
-`go get github.com/zarazan/invasion`
+Close this repo to your corresponding GOPATH and run `go install .`
 
 ## Usage
 
@@ -16,11 +16,13 @@ To run simulation with six aliens: `$ invasion 6`
 
 Verbose logging: `$ invasion -v 6`
 
+Specify a different worlds file: `$ invasion -world=world_2.txt 6`
+
 ## Simulation Requirements
 
 If two aliens are in the same city they fight, destroy each other, destroy the city, and destroy any adjacent roads.
 
-Runs for a max pf 10,000 moves or until all aliens have been destroyed.
+Runs for a max of 10,000 moves or until all aliens have been destroyed.
 
 Prints to the console each time aliens fight each other.
 

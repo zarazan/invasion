@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+// ReadWorldFile receives the name of the world import file and
+// parses it into the cities data structure located in the simulation.go file
 // City names cannot have any spaces
 func readWorldFile(fileName string) {
 	file, err := os.Open(fileName)

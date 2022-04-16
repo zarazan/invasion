@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"flag"
+	"fmt"
 	"log"
 	"math/rand"
 	"strconv"
@@ -10,6 +11,7 @@ import (
 )
 
 var loggingFlag bool
+var fileNameFlag string
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
@@ -20,13 +22,14 @@ func main() {
 		log.Fatal(err)
 	}
 
-	readWorldFile("worlds/world_1.txt")
+	readWorldFile(fmt.Sprintf("worlds/%s", fileNameFlag))
 	runSimulation(numAliens)
 	printStandingCities()
 }
 
 func setFlags() {
 	flag.BoolVar(&loggingFlag, "v", false, "display verbose console logging")
+	flag.StringVar(&fileNameFlag, "world", "world_1.txt", "specify the world import file to use")
 	flag.Parse()
 }
 

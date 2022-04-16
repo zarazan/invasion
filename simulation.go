@@ -21,6 +21,8 @@ type Alien struct {
 	location  *City
 }
 
+// adjacentCities returns the un-destroyed adjacent cities that
+// can be traveled to by a single road
 func (c *City) adjacentCities() (ret []*City) {
 	for _, city := range c.roads {
 		if !city.destroyed {

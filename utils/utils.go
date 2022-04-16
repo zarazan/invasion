@@ -5,6 +5,8 @@ import (
 	"math/rand"
 )
 
+// GetRandomItem returns a random item from the passed in array
+// An error is returned if the array is empty
 func GetRandomItem[K comparable](array []K) (K, error) {
 	arrayLength := len(array)
 	if arrayLength < 1 {
