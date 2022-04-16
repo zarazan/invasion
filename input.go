@@ -7,7 +7,8 @@ import (
 	"strings"
 )
 
-func ReadWorldFile(fileName string) {
+// City names cannot have any spaces
+func readWorldFile(fileName string) {
 	file, err := os.Open(fileName)
 	if err != nil {
 		log.Fatal(err)
@@ -33,6 +34,13 @@ func ReadWorldFile(fileName string) {
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
+}
+
+var oppositeDirection = map[string]string{
+	"north": "south",
+	"south": "north",
+	"east":  "west",
+	"west":  "east",
 }
 
 func paveRoad(fromCity *City, toCity *City, direction string) {

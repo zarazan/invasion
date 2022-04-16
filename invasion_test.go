@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestGetNumAliens(t *testing.T) {
+func TestGetNumAliensArg(t *testing.T) {
 	var testCases = []struct {
 		input    string
 		want     int
@@ -24,7 +24,7 @@ func TestGetNumAliens(t *testing.T) {
 		t.Run(testName, func(t *testing.T) {
 
 			os.Args = []string{"", tt.input}
-			ans, err := getNumAliens()
+			ans, err := getNumAliensArg()
 			if !tt.hasError && err != nil {
 				t.Errorf("Expected no error got error %d", err)
 			}

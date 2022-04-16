@@ -10,7 +10,11 @@ Aliens have flown to earth as a last-ditch attempt to find a habitable planet be
 
 ## Usage
 
-Input: number of aliens to create
+`invasion [OPTION] [NUM_ALIENS]`
+
+To run simulation with six aliens: `$ invasion 6`
+
+Verbose logging: `$ invasion -v 6`
 
 ## Simulation Requirements
 
@@ -22,11 +26,10 @@ Prints to the console each time aliens fight each other.
 
 Prints what is left of the world at the end.
 
-## Tests
+## Run Tests
 
-Run the tests: `go test . -v`
+`go test ./...`
 
 ## TODO
 
 Error handling for the parsing of the worlds file
-
