@@ -44,6 +44,8 @@ City names do not contain spaces or equal signs (=)
 
 Directions included are only "north", "south", "east" and "west". If you provide directions other than these the simulation will work but the road will only be available in one direction.
 
+The input file could have overlapping streets such as two cities that have the same city "west" of them. Withe the exisitng functionaltiy the import function will just override the the previous street.
+
 It is possible the city file contains no cities and the aliens do not land on any cities to start. In this situation the simulation runs 10,000 times skipping over all aiens and then completes with an empty output listing all the un-destroyed cities. The program could be halted when no cities are present if that was the desired functionality.
 
 ## Possible Improvements
