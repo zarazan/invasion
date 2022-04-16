@@ -1,4 +1,4 @@
-## Invasion
+# Invasion
 
 Invasion is a simulation of an alien invasion written in GO.
 
@@ -18,6 +18,10 @@ Verbose logging: `$ invasion -v 6`
 
 Specify a different worlds file: `$ invasion -world=world_2.txt 6`
 
+## Run Tests
+
+`go test ./...`
+
 ## Simulation Requirements
 
 If two aliens are in the same city they fight, destroy each other, destroy the city, and destroy any adjacent roads.
@@ -28,9 +32,15 @@ Prints to the console each time aliens fight each other.
 
 Prints what is left of the world at the end.
 
-## Run Tests
+## Assumptions
 
-`go test ./...`
+The aliens fight when first landing.
+
+Aliens will always move in a direction available to them instead of trying to move - realizing there is no city there - and then staying in the same spot.
+
+City names do not contain spaces or equal signs (=)
+
+It is possible the city file contains no cities and the aliens do not land on any cities to start. In this situation the simulation runs 10,000 times skipping over all aiens and then completes with an empty output listing all the un-destroyed cities.
 
 ## TODO
 

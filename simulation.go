@@ -66,14 +66,10 @@ func moveAliens() {
 		adjacentCities := alien.location.adjacentCities()
 		newCity, err := utils.GetRandomItem(adjacentCities)
 		if err != nil {
-			if loggingFlag {
-				fmt.Printf("%s cannot move because there are no adjacent cities\n", alien.name)
-			}
+			printLog(fmt.Sprintf("%s cannot move because there are no adjacent cities\n", alien.name))
 			continue
 		}
-		if loggingFlag {
-			fmt.Printf("%s moving from %s to %s\n", alien.name, alien.location.name, newCity.name)
-		}
+		printLog(fmt.Sprintf("%s moving from %s to %s\n", alien.name, alien.location.name, newCity.name))
 		alien.location = newCity
 	}
 }

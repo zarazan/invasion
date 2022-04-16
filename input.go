@@ -10,6 +10,7 @@ import (
 // ReadWorldFile receives the name of the world import file and
 // parses it into the cities data structure located in the simulation.go file
 // City names cannot have any spaces
+// check for unsupported direction (it just won't connect up with another city)
 func readWorldFile(fileName string) {
 	file, err := os.Open(fileName)
 	if err != nil {
@@ -45,6 +46,8 @@ var oppositeDirection = map[string]string{
 	"west":  "east",
 }
 
+// paveRoad assigns both directions so aliens can travel back and forth
+// between two connecting cities
 func paveRoad(fromCity *City, toCity *City, direction string) {
 	fromCity.roads[direction] = toCity
 	toCity.roads[oppositeDirection[direction]] = fromCity

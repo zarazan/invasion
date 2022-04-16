@@ -31,3 +31,10 @@ func printDestroyedCity(city *City, aliens []*Alien) {
 	alienList := strings.Join(alienNames, ", ") + " and " + last
 	fmt.Println(alienList)
 }
+
+func printLog(log string) {
+	if !loggingFlag {
+		return
+	}
+	fmt.Println(log)
+}
