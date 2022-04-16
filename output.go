@@ -36,5 +36,5 @@ func printLog(log string) {
 	if !loggingFlag {
 		return
 	}
-	fmt.Println(log)
+	fmt.Print(log)
 }
