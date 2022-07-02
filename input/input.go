@@ -1,17 +1,23 @@
-package main
+package input
 
 import (
 	"bufio"
 	"log"
 	"os"
 	"strings"
+
+	. "github.com/zarazan/invasion/models"
 )
 
-// ReadWorldFile receives the name of the world import file and
+var cities []*City
+
+// ReadWorldFile receives the Name of the world import file and
 // parses it into the cities data structure located in the simulation.go file
-// City names cannot have any spaces
+// City Names cannot have any spaces
 // check for unsupported direction (it just won't connect up with another city)
-func readWorldFile(fileName string) {
+func ReadWorldFile(fileName string) []*City {
+	cities = nil
+
 	file, err := os.Open(fileName)
 	if err != nil {
 		log.Fatal(err)
@@ -31,45 +37,32 @@ func readWorldFile(fileName string) {
 			roadDirection := road[0]
 			roadCityName := road[1]
 			toCity := findOrCreateCity(roadCityName)
-			paveRoad(city, toCity, roadDirection)
+			city.PaveRoad(toCity, roadDirection)
 		}
 	}
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
+	return cities
 }
 
-var oppositeDirection = map[string]string{
-	"north": "south",
-	"south": "north",
-	"east":  "west",
-	"west":  "east",
-}
-
-// paveRoad assigns both directions so aliens can travel back and forth
-// between two connecting cities
-func paveRoad(fromCity *City, toCity *City, direction string) {
-	fromCity.roads[direction] = toCity
-	toCity.roads[oppositeDirection[direction]] = fromCity
-}
-
-func findOrCreateCity(name string) *City {
-	city := findCityByName(name)
+func findOrCreateCity(Name string) *City {
+	city := findCityByName(Name)
 	if city != nil {
 		return city
 	}
-	return createCity(name)
+	return createCity(Name)
 }
 
-func createCity(name string) *City {
-	city := &City{name: name, roads: make(map[string]*City)}
+func createCity(Name string) *City {
+	city := &City{Name: Name, Roads: make(map[string]*City)}
 	cities = append(cities, city)
 	return city
 }
 
-func findCityByName(name string) *City {
+func findCityByName(Name string) *City {
 	for _, city := range cities {
-		if city.name == name {
+		if city.Name == Name {
 			return city
 		}
 	}

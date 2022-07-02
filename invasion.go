@@ -9,6 +9,9 @@ import (
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/zarazan/invasion/input"
+	"github.com/zarazan/invasion/simulation"
 )
 
 var loggingFlag bool
@@ -23,9 +26,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	readWorldFile(fmt.Sprintf("worlds/%s", fileNameFlag))
-	runSimulation(numAliens)
-	printStandingCities()
+	cities := input.ReadWorldFile(fmt.Sprintf("worlds/%s", fileNameFlag))
+	simulation.RunSimulation(cities, numAliens, loggingFlag)
 }
 
 func setFlags() {
