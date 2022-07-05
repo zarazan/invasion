@@ -2,15 +2,18 @@ package simulation
 
 import (
 	"fmt"
+	"sync"
 
 	. "github.com/zarazan/invasion/models"
 	"github.com/zarazan/invasion/output"
 	"github.com/zarazan/invasion/utils"
 )
 
-var cities []*City
-var aliens []*Alien
-var loggingFlag bool
+var (
+	cities      []*City
+	aliens      []*Alien
+	loggingFlag bool
+)
 
 func RunSimulation(citiesInput []*City, numAliens int, loggingFlagInput bool) {
 	loggingFlag = loggingFlagInput
@@ -30,8 +33,8 @@ func createAliens(numAliens int) {
 	for i := 1; i <= numAliens; i++ {
 		newAlien := Alien{Name: fmt.Sprintf("Alien %d", i)}
 		aliens = append(aliens, &newAlien)
-		if Location, err := utils.GetRandomItem(cities); err == nil {
-			newAlien.Location = Location
+		if location, err := utils.GetRandomItem(cities); err == nil {
+			newAlien.Location = location
 		}
 	}
 }
@@ -47,16 +50,26 @@ func aliveAliens() (ret []*Alien) {
 
 // moveAliens moves all alive aliens to an available adjacent city
 func moveAliens() {
+	var waitGroup sync.WaitGroup
 	for _, alien := range aliveAliens() {
-		adjacentCities := alien.Location.AdjacentCities()
-		newCity, err := utils.GetRandomItem(adjacentCities)
-		if err != nil {
-			printLog(fmt.Sprintf("%s cannot move because there are no adjacent cities\n", alien.Name))
-			continue
-		}
-		printLog(fmt.Sprintf("%s moving from %s to %s\n", alien.Name, alien.Location.Name, newCity.Name))
-		alien.Location = newCity
+		waitGroup.Add(1)
+		go func(alien *Alien) {
+			defer waitGroup.Done()
+			moveAlien(alien)
+		}(alien)
 	}
+	waitGroup.Wait()
+}
+
+func moveAlien(alien *Alien) {
+	adjacentCities := alien.Location.AdjacentCities()
+	newCity, err := utils.GetRandomItem(adjacentCities)
+	if err != nil {
+		printLog(fmt.Sprintf("%s cannot move because there are no adjacent cities\n", alien.Name))
+		return
+	}
+	printLog(fmt.Sprintf("%s moving from %s to %s\n", alien.Name, alien.Location.Name, newCity.Name))
+	alien.Location = newCity
 }
 
 // resolveFights destroys all cities and aliens where more than 1 alien
@@ -71,14 +84,18 @@ func resolveFights() {
 	}
 
 	for city, occupyingAliens := range occupationMap {
-		numAliens := len(occupyingAliens)
-		if numAliens > 1 {
-			city.Destroyed = true
-			for _, alien := range occupyingAliens {
-				alien.Destroyed = true
-			}
-			output.PrintDestroyedCity(city, occupyingAliens)
+		checkCityForFight(city, occupyingAliens)
+	}
+}
+
+func checkCityForFight(city *City, aliens []*Alien) {
+	numAliens := len(aliens)
+	if numAliens > 1 {
+		city.Destroyed = true
+		for _, alien := range aliens {
+			alien.Destroyed = true
 		}
+		output.PrintDestroyedCity(city, aliens)
 	}
 }
 
