@@ -1,9 +1,5 @@
 package models
 
-// The City could store the list of aliens that are in the city
-// The Alien could store which City it is in
-// The information could be stored in both places - risks the data becoming inconsistent
-
 type City struct {
 	Name      string
 	Destroyed bool
